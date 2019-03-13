@@ -1,10 +1,19 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 import axios from "axios";
 import {
-    Container,
-    Row,
-    Col,
-  } from "react-bootstrap";
+  Container,
+  Col,
+  CardColumns,
+  Card,
+  CardDeck,
+  Navbar,
+  Nav,
+  Row,
+  Image,
+  Button,
+  CardGroup
+} from "react-bootstrap";
+
 import JobListings from "./JobListings";
 
 class Jobs extends Component {
@@ -31,15 +40,14 @@ class Jobs extends Component {
       return (
         <Container>
           <Row>
-          <Col md={{ span: 1}} >
-            <p>Sidebar</p>
-          </Col>
-            <JobListings jobList={jobList} />
+            <Col md={{ span: 1 }}>
+              <p>Sidebar</p>
+            </Col>
+              <JobListings jobList ={jobList}/>
           </Row>
-              
         </Container>
       );
     }
   }
 
-  export default Jobs;
+export default Jobs;
