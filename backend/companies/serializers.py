@@ -8,10 +8,11 @@ class JobSerializer(serializers.HyperlinkedModelSerializer):
     parent_name = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), source='company.name')
     parent_city = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(),source='company.city')
     parent_state = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), source='company.state')
+    parent_logo = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all(), source='company.logo')
 
     class Meta:
         model = Job
-        fields = ('id', 'title', 'description', 'apply_link', 'parent_id', 'parent_name', 'parent_city', 'parent_state')
+        fields = ('id', 'title', 'description', 'apply_link', 'parent_id', 'parent_name', 'parent_city', 'parent_state', 'parent_logo')
 
     def create(self, validated_data):
         subject = Job.objects.create(parent=validated_data['company']['id'], title=validated_data['title'])

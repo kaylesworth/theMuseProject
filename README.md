@@ -5,3 +5,6 @@ To launch Django server
   run pipenv shell in terminal
   python manage.py runserver
 
+## To launch locally
+- Backend
+  - 
