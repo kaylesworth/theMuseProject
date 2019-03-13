@@ -1,21 +1,21 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import "./App.css";
 import axios from "axios";
+
 import {
-  Navbar,
-  Nav,
-  Jumbotron,
   Container,
-  Row,
   Col,
-  Media,
-  Modal,
-  Button,
   CardColumns,
   Card,
+  CardDeck,
+  Navbar,
+  Nav,
+  Row,
+  Image,
+  Button,
   CardGroup
 } from "react-bootstrap";
-import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
-import "./App.css";
 
 class App extends Component {
   render() {
@@ -24,18 +24,18 @@ class App extends Component {
         <Router>
           <div>
             <Header />
-            <Route exact path="/" component={Index} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/companies" component={Companies} />
             <Route exact path="/companies/:id" component={CompanyPage} />
             <Route exact path="/jobs/" component={Jobs} />
-            <Route exact path="/jobs/:id" component={JobPost}/>
+            <Route exact path="/jobs/:id" component={JobPost} />
           </div>
         </Router>
       </div>
     );
   }
 }
-class Index extends Component {
+class Home extends Component {
   render() {
     return (
       <div>
@@ -47,7 +47,6 @@ class Index extends Component {
     );
   }
 }
-
 class Header extends Component {
   render() {
     return (
@@ -65,7 +64,6 @@ class Header extends Component {
     );
   }
 }
-
 class Companies extends Component {
   constructor(props) {
     super(props);
@@ -82,37 +80,138 @@ class Companies extends Component {
     axios
       .get("http://localhost:8000/api/companies/")
       .then(res => this.setState({ companyList: res.data }))
-      .then(console.log("Accessed Company API"))
       .catch(error => console.log(error));
   };
   render() {
     const { companyList } = this.state;
     return (
       <Container>
-        <Col md={{ span: 10, offset: 1 }}>
-          <CardColumns>
+        <Col md={{ span: 9, offset: 1 }}>
+          <CardColumns style={{ padding: "2em" }}>
             {companyList.map(item => (
-              <NavLink
-                activeStyle={{textDecoration: 'none'}}
-                to={{
-                  pathname: "/companies/" + item.id,
-                  state: { company: item }
-                }}
-              >
-                <Card className="text-center">
-                  <Card.Img variant="top" src={item.logo} />
-                  <Card.Body>
-                    <Card.Title>{item.name}</Card.Title>
-                    <Card.Text>
-                      {item.city} | {item.state}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </NavLink>
+              <Card className="text-center">
+                <Card.Img
+                  variant="top"
+                  src={item.logo}
+                  class="img-raised rounded img-fluid"
+                />
+                <Card.Body>
+                  <Card.Title>
+                    <NavLink
+                      to={{
+                        pathname: "/companies/" + item.id,
+                        state: { company: item }
+                      }}
+                    >
+                      {item.name}
+                    </NavLink>
+                  </Card.Title>
+                  <Card.Text>
+                    {item.city} | {item.state}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
             ))}
           </CardColumns>
         </Col>
       </Container>
+    );
+  }
+}
+
+class CompanyPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      company: [],
+      jobs: []
+    };
+
+    this.getCompany = this.getCompany.bind(this);
+  }
+
+  getCompany (){
+    let companyId = this.props.match.params.id;
+    console.log('Get Company called');
+    axios
+      .get("http://localhost:8000/api/companies/"+companyId)
+      .then(res => this.setState({ company: res.data }))
+      .catch(error => console.log(error));
+    
+  }
+
+  componentDidMount(){
+    if (typeof(this.props.location.state) == 'undefined'){
+      this.getCompany();
+    } else {
+      this.setState({ company: this.props.location.state.company });
+    }
+    
+  }
+
+  render() {
+    console.log('Company props');
+    console.log(this.props);
+    console.log('Company state');
+    console.table(this.state);
+    const { company, jobs } = this.state;
+    return (
+      <Container>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <h2>{company.name}</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <h3>Current Job Openings</h3>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+}
+
+class CompanyJobOpenings extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      jobs: this.props.jobs
+    }
+  }
+  render() {
+    console.log(this.props);
+    const{
+      jobs
+    } = this.state;
+    return (
+      <CardGroup>
+        {
+        jobs.map(item => (
+          <Card border="dark" style={{ width: "18rem" }}>
+            <Card.Title>
+              <NavLink
+                to={{
+                  pathname: "/jobs/" + item.id,
+                  state: { job: item }
+                }}
+              >
+                {item.title}
+              </NavLink>
+            </Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">
+              {item.parent_city} | {item.parent_state}
+            </Card.Subtitle>
+            <Card.Text>Description</Card.Text>
+          </Card>
+        ))
+              }
+        </CardGroup>
     );
   }
 }
@@ -141,9 +240,10 @@ class Jobs extends Component {
     return (
       <Container>
         <Row>
-          <Col md={{ span: 8, offset: 3 }}>
-            <JobListings jobList={jobList} />
+          <Col md={{ span: 1 }}>
+            <p>Sidebar</p>
           </Col>
+          <JobListings jobList={jobList} />
         </Row>
       </Container>
     );
@@ -154,116 +254,96 @@ class JobListings extends Component {
   render() {
     const { jobList } = this.props;
     return (
-      <ul className="list-unstyled">
+      <Col md={{ span: 10, offset: 1 }}>
         {jobList.map(item => (
-          <Media as="li">
-            <img
-              width={64}
-              className="mr-3"
-              src={item.parent_logo}
-              alt="Generic placeholder"
-            />
-            <Media.Body>
-            <NavLink
-                activeStyle={{textDecoration: 'none'}}
-                to={{
-                  pathname: "/jobs/" + item.id,
-                  state: { job : item }
-                }}
-              >
-              <h4 style={{textDecoration: 'none'}}>{item.title}</h4></NavLink>
-              <h6>
-                {item.parent_name} | {item.parent_city}, {item.parent_state}
-              </h6>
-              <p />
-            </Media.Body>
-          </Media>
-        ))}
-      </ul>
-    );
-  }
-}
+          <Card bg="light" style={{ margin: "1em" }}>
+            <Card.Header>
+              <div style={{ overflow: "auto" }}>
+                <div style={{ clear: "left" }}>
+                  <h4>
+                  <NavLink
+                      to={{
+                        pathname: "/jobs/" + item.id,
+                        state: { job: item }
+                      }}
+                    >
+                      {item.title}
+                    </NavLink>
+                  </h4>
+                  <h6 style={{ float: "left" }}>
+                    {item.parent_name} | {item.parent_city} |{" "}
+                    {item.parent_state}
+                  </h6>
+                </div>
 
-class CompanyPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      company: this.props.location.state.company
-    };
-  }
-
-  render() {
-    const { company } = this.state;
-    console.log(company);
-    return (
-      <Container>
-        <Row>
-          <Col md={{ span: 6, offset: 3 }}>
-            <h2>{company.name}</h2>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={{ span: 6, offset: 3 }}>
-            <h3>Current Job Openings</h3>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={{ span: 6, offset: 3 }}>
-            <CompanyJobOpenings jobs={company.jobs} />
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
-class CompanyJobOpenings extends Component {
-  render() {
-    const { jobs } = this.props;
-    return (
-      <CardGroup>
-        {jobs.map(item => (
-          <Card style={{ width: "18rem" }}>
-            <Card.Title>
-            <NavLink
-                activeStyle={{textDecoration: 'none'}}
-                to={{
-                  pathname: "/jobs/" + item.id,
-                  state: { job : item }
-                }}
-              >{item.title}</NavLink>
-            </Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              {item.parent_city} | {item.parent_state}
-            </Card.Subtitle>
-            <Card.Text>Description</Card.Text>
+                <Image
+                  style={{ float: "right", width: 64 }}
+                  src={item.parent_logo}
+                  rounded
+                />
+              </div>
+            </Card.Header>
+            <Card.Body>Description</Card.Body>
           </Card>
         ))}
-      </CardGroup>
+      </Col>
     );
   }
 }
 
 class JobPost extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      job: this.props.location.state.job
-    };
+      job: []
+    }
+    this.getJob = this.getJob.bind(this);
   }
-  render() {
+
+  getJob (){
+    let jobId = this.props.match.params.id;
+    axios
+      .get("http://localhost:8000/api/jobs/"+jobId)
+      .then(res => this.setState({ job: res.data }))
+      .catch(error => console.log(error)); 
+  }
+
+  componentDidMount(){
+    if (typeof(this.props.location.state) == 'undefined'){
+      this.getJob()
+    } else {
+      this.setState({ job: this.props.location.state.job });
+    }
+  }
+  
+  render() {    
+    
     const {
       job
     } = this.state;
     return (
       <Container>
-        <Col md={{ span: 6, offset: 3 }}>
-          <h2>{job.title}</h2>
-          <h4>{job.parent_city} | {job.parent_state}</h4>
-          <p>{job.description}</p>
-        </Col>
+        <Row style={{ padding: "2em" }}>
+          <Col md={{ span: 6, offset: 3 }}>
+            <h2>{job.title}</h2>
+            <h4>
+              <a href={"/companies/" + job.parent_id}>{job.parent_name} </a>
+               | {job.parent_city}, {job.parent_state}
+            </h4>
+          </Col>
+          <Col md={{ span: 1, offset: 11 }}>
+            <Button variant="primary" href={job.apply_link}>
+              Apply
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <p>{job.description}</p>
+          </Col>
+        </Row>
       </Container>
-    )
+    );
   }
 }
-
 export default App;
