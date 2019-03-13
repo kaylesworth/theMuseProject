@@ -1,10 +1,16 @@
 # theMuseProject
 
-To launch Django server
-  change directory to /backend/
-  run pipenv shell in terminal
-  python manage.py runserver
-
 ## To launch locally
+- Open two separate terminals to run both the Backend and Frontend
+
 - Backend
-  - 
+  - Navigate to /backend/
+  - pipenv install
+  - pipenv shell
+  - python manage.py runserver
+
+-Frontend
+  - Navigate to /frontend/
+  - npm install
+  - npm start
+
