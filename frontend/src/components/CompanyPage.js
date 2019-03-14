@@ -80,6 +80,19 @@ class CompanyPage extends Component {
               <CompanyJobOpenings jobs={company.jobs}/>
             </Col>
           </Row>
+          <Row>
+            <Col>
+            <TwitterTimelineEmbed
+            sourceType="profile"
+            screenName={company.name}
+            options={{height:400}}/>
+            </Col>
+            <Col>
+            <div class="fb-page" data-href={"https://www.facebook.com/" + company.name} data-tabs="timeline" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite={"https://www.facebook.com/" + company.name} class="fb-xfbml-parse-ignore"><a href={"https://www.facebook.com/" + company.name}>{company.name}</a></blockquote></div>
+
+            </Col>
+          </Row>
+          
         </Container>
       );
     }
