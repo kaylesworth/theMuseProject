@@ -37,10 +37,10 @@ class Companies extends Component {
       const { companyList } = this.state;
       return (
         <Container>
-          <Col md={{ span: 9, offset: 1 }}>
+          <Col md={{ span: 8, offset: 2 }} className="companyListCol">
             <CardColumns style={{ padding: "2em" }}>
               {companyList.map(item => (
-                <Card className="text-center">
+                <Card className="text-center" border="info">
                   <Card.Img
                     variant="top"
                     src={item.logo}

@@ -1,3 +1,86 @@
 body {
   font-family: 'Roboto';font-size: 22px;
+  background-color: #ccc;
+}
+
+.banner {
+  height: 600px;
+  text-align: center;
+  width: 80%;
+  background: #eee;
+  border-radius: 0px 0px 25px 25px;
+  margin: 0 auto;
+}
+
+.centerBanner {
+
+  margin: 0;
+  position: relative;
+  top: 35%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.mainBanner > h2{
+  color: #53b6d0;
+
+}
+
+.bottomBanner2{
+  position: fixed;
+  width: 60%;
+  bottom: 0;
+  border: 3px solid #8AC007;
+  margin: 0 auto;
+}
+
+.grid-container {
+  height: 600px;
+  text-align: center;
+  width: 80%;
+  background: #eee;
+  border-radius: 0px 0px 25px 25px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas: ". . . . ." ". mainBanner mainBanner mainBanner ." ". mainBanner mainBanner mainBanner ." ". mainBanner mainBanner mainBanner ." ". bottomBanner bottomBanner bottomBanner .";
+}
+
+.bottomBanner { 
+  grid-area: bottomBanner;
+  margin: 0 auto;
+  vertical-align: middle;
+ }
+
+.mainBanner { 
+  grid-area: mainBanner; 
+  margin: 0 auto;
+  position: relative;
+
+}
+
+.bottomBanner > .card-deck > a {
+  color:#53b6d0;
+}
+
+.jobPostContainer {
+  text-align: center;
+  width: 80%;
+  background: #eee;
+  border-radius: 0px 0px 25px 25px;
+  margin: 0 auto;
+}
+
+.jobListingCol {
+  width:90%;
+  background: #fff;
+  border-radius: 0px 0px 25px 25px;
+}
+
+.companyListCol {
+  width:90%;
+  background: #fff;
+  border-radius: 0px 0px 25px 25px;
 }

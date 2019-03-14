@@ -1,22 +1,12 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
-import axios from "axios";
 import {
-    Container,
-    Col,
-    CardColumns,
     Card,
     CardDeck,
-    Navbar,
-    Nav,
-    Row,
-    Image,
-    Button,
-    CardGroup
   } from "react-bootstrap";
-  
+
 class CompanyJobOpenings extends Component {
     state ={ jobs: []}
+
   
     componentWillReceiveProps(newProps){
       this.setState({ jobs: newProps.jobs });
@@ -25,23 +15,24 @@ class CompanyJobOpenings extends Component {
       const{
         jobs
       } = this.state;
+      
       return (
         
-        <CardGroup>
+        <CardDeck>
           {
           jobs.map(item => (
-            <Card border="dark" style={{ width: "18rem" }}>
+            <Card border="dark" style={{ width: "18rem", padding:'.5em' }} >
               <Card.Title>
-                <a href={"/jobs/" + item.id}>{item.title}</a>
+                {item.title}
               </Card.Title>
               <Card.Subtitle className="mb-2 text-muted">
                 {item.parent_city} | {item.parent_state}
               </Card.Subtitle>
-              <Card.Text>Description</Card.Text>
+              <Card.Text><a href={"/jobs/" + item.id}>Click to view</a></Card.Text>
             </Card>
           ))
                 }
-          </CardGroup>
+          </CardDeck>
       );
     }
   }

@@ -2,16 +2,7 @@ import React, {Component} from 'react';
 import axios from "axios";
 import {
   Container,
-  Col,
-  CardColumns,
-  Card,
-  CardDeck,
-  Navbar,
-  Nav,
   Row,
-  Image,
-  Button,
-  CardGroup
 } from "react-bootstrap";
 
 import JobListings from "./JobListings";
@@ -20,14 +11,14 @@ class Jobs extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        jobList: []
+        jobList: [],
       };
     }
   
     componentDidMount() {
       this.refreshList();
     }
-  
+
     refreshList = () => {
       axios
         .get("http://localhost:8000/api/jobs/")
@@ -37,12 +28,11 @@ class Jobs extends Component {
     };
     render() {
       const { jobList } = this.state;
+      var job = jobList[Math.floor(Math.random()*jobList.length)];
+      console.log(job)
       return (
         <Container>
           <Row>
-            <Col md={{ span: 1 }}>
-              <p>Sidebar</p>
-            </Col>
               <JobListings jobList ={jobList}/>
           </Row>
         </Container>

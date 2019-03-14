@@ -14,6 +14,10 @@ import {
     Button,
     CardGroup
   } from "react-bootstrap";
+import { TwitterTimelineEmbed, TwitterShareButton, TwitterFollowButton, TwitterHashtagButton, TwitterMentionButton, TwitterTweetEmbed, TwitterMomentShare, TwitterDMButton, TwitterVideoEmbed, TwitterOnAirButton } from 'react-twitter-embed';
+import LinkedIn from "../resources/img/linkedin-logo.png";
+import Facebook from "../resources/img/facebook-logo.png";
+import Twitter from "../resources/img/twitter-logo.png";
 
 import CompanyJobOpenings from "./CompanyJobOpenings";
 
@@ -49,19 +53,30 @@ class CompanyPage extends Component {
     render() {
       const { company } = this.state;
       return (
-        <Container>
+        <Container style={{background: '#fff', borderRadius: '0 0 25px 25px'}}>
           <Row>
+            <Col md={{ span: 1}}>
+              <Image src={company.logo} height={50}/>
+            </Col>
+            <Col md={{ span: 6, offset: 2 }}>
+              <h2 style={{textAlign: "center"}}>{company.name}</h2>
+            </Col>
+            
+          </Row>
+          <Row style={{textAlign: "center"}}>
+            <Col md={{ span: 6, offset: 3}}>
+            <a href={company.linkedin}><img src={LinkedIn} alt="LinkedIn Logo" height={30}/></a>
+            <a href={company.facebook}><img src={Facebook} alt="Facebook Logo" height={30}/></a>
+            <a href={company.twitter}><img src={Twitter} alt="Twitter Logo" height={30}/></a>
+            </Col>
+          </Row>
+          <Row style={{padding: ".5em"}}>
             <Col md={{ span: 6, offset: 3 }}>
-              <h2>{company.name}</h2>
+              <h3>Current Job Openings:</h3>
             </Col>
           </Row>
           <Row>
-            <Col md={{ span: 6, offset: 3 }}>
-              <h3>Current Job Openings</h3>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={{ span: 6, offset: 3 }}>
+            <Col md={{ span: 6, offset: 3 }} >
               <CompanyJobOpenings jobs={company.jobs}/>
             </Col>
           </Row>

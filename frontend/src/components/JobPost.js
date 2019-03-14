@@ -46,7 +46,7 @@ class JobPost extends Component {
         job
       } = this.state;
       return (
-        <Container>
+        <Container className="jobPostContainer"> 
           <Row style={{ padding: "2em" }}>
             <Col md={{ span: 6, offset: 3 }}>
               <h2>{job.title}</h2>

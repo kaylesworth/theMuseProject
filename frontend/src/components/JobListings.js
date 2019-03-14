@@ -10,14 +10,14 @@ class JobListings extends Component {
     render() {
       const { jobList } = this.props;
       return (
-        <Col md={{ span: 10, offset: 1 }}>
+        <Col md={{ span: 9, offset:2 }} className="jobListingCol">
           {jobList.map(item => (
             <Card bg="light" style={{ margin: "1em" }}>
               <Card.Header>
                 <div style={{ overflow: "auto" }}>
                   <div style={{ clear: "left" }}>
                     <h4>
-                      <a href={"/jobs/" + item.id}>{item.title}</a>
+                      {item.title}
                     </h4>
                     <h6 style={{ float: "left" }}>
                       {item.parent_name} | {item.parent_city} |{" "}
@@ -32,7 +32,7 @@ class JobListings extends Component {
                   />
                 </div>
               </Card.Header>
-              <Card.Body>Description</Card.Body>
+              <Card.Body><a href={"/jobs/" + item.id}>Click here to read about this job.</a></Card.Body>
             </Card>
           ))}
         </Col>
